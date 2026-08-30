@@ -28,20 +28,22 @@ export function MarketingNavbar({ isAuthed }: { isAuthed: boolean }) {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-        <Link href="/" className="font-brand text-lg font-bold tracking-tight text-white">
-          SIDEQUEST
-        </Link>
+        <div className="flex items-center gap-8">
+          <Link href="/" className="font-brand text-lg font-bold tracking-tight text-white">
+            SIDEQUEST
+          </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-sm font-medium text-white/75 transition-colors hover:text-white"
-            >
-              {l.label}
-            </Link>
-          ))}
+          <div className="hidden items-center gap-6 md:flex">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="text-sm font-medium text-white/75 transition-colors hover:text-white"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
