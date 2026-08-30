@@ -11,6 +11,10 @@ import {
   Send,
   Share2,
   BadgeCheck,
+  Image as ImageIcon,
+  MessageSquare,
+  FileText,
+  Camera,
 } from "lucide-react";
 import { MarketingNavbar } from "@/components/marketing/MarketingNavbar";
 import { HeroSearch } from "@/components/marketing/HeroSearch";
@@ -152,25 +156,25 @@ export default async function HomePage() {
               to share anywhere.
             </p>
             <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-4 font-brand text-sm text-white/70">
-              sidequest.my/event/cofurun-26
+              sidequest.my/event/tech-symposium
             </div>
           </div>
 
           <div className="relative flex flex-col items-center gap-4">
-            <div className="w-full max-w-sm space-y-2 rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white/60 line-through decoration-white/30">
-              <p>📌 Poster.jpg</p>
-              <p>💬 &ldquo;pls read here for info!! link in bio&rdquo;</p>
-              <p>📝 Google Form (no context)</p>
-              <p>📸 Instagram story, expires in 24h</p>
+            <div className="w-full max-w-sm space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white/60 line-through decoration-white/30">
+              <p className="flex items-center gap-2"><ImageIcon className="h-4 w-4 shrink-0" /> Poster.jpg</p>
+              <p className="flex items-center gap-2"><MessageSquare className="h-4 w-4 shrink-0" /> &ldquo;pls read here for info!! link in bio&rdquo;</p>
+              <p className="flex items-center gap-2"><FileText className="h-4 w-4 shrink-0" /> Google Form (no context)</p>
+              <p className="flex items-center gap-2"><Camera className="h-4 w-4 shrink-0" /> Instagram story, expires in 24h</p>
             </div>
             <div className="text-2xl text-white/40">↓</div>
             <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-brand/40 bg-linear-to-b from-brand/20 to-transparent p-1 shadow-2xl">
               <div className="rounded-xl bg-slate-900 p-5">
                 <span className="mb-3 inline-block rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white/70">
-                  Sports
+                  Technology
                 </span>
-                <p className="font-display text-xl font-semibold text-white">COFURUN&apos;26</p>
-                <p className="mt-1 text-xs text-white/60">3 October 2026 · Padang Kawad, UMS</p>
+                <p className="font-display text-xl font-semibold text-white">Campus Tech Symposium</p>
+                <p className="mt-1 text-xs text-white/60">12 November 2026 · Main Auditorium</p>
                 <p className="mt-4 inline-flex items-center gap-1 rounded-full bg-brand px-4 py-2 text-xs font-semibold text-white">
                   Register <ArrowRight className="h-3 w-3" />
                 </p>
@@ -337,28 +341,21 @@ export default async function HomePage() {
                 <Link href="/discover" className="transition-colors hover:text-white/70">Discover Events</Link>
                 <Link href="/organizations" className="transition-colors hover:text-white/70">Organizations</Link>
                 <Link href="/saved" className="transition-colors hover:text-white/70">Saved Events</Link>
-                <Link href="/studio" className="transition-colors hover:text-white/70">Studio</Link>
+                <Link href="/about" className="transition-colors hover:text-white/70">About</Link>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-white/85">For Organizations</h3>
+                <Link href="/about" className="transition-colors hover:text-white/70">Why SideQuest</Link>
+                <Link href="/organizations" className="transition-colors hover:text-white/70">Organization Profiles</Link>
+                <Link href="/studio" className="transition-colors hover:text-white/70">Manage Events</Link>
                 <Link href="/studio/events/new" className="transition-colors hover:text-white/70">Create an Event</Link>
                 <Link href="/studio/organizations/new" className="transition-colors hover:text-white/70">Create an Organization</Link>
               </div>
 
               <div className="flex flex-col gap-3">
-                <h3 className="font-semibold text-white/85">For Organizations</h3>
-                <Link href="/" className="transition-colors hover:text-white/70">Why SideQuest</Link>
-                <Link href="/organizations" className="transition-colors hover:text-white/70">Organization Profiles</Link>
-                <Link href="/studio" className="transition-colors hover:text-white/70">Manage Events</Link>
-                <Link href="/studio" className="transition-colors hover:text-white/70">Publish Events</Link>
-                <Link href="/" className="transition-colors hover:text-white/70">Community Reach</Link>
-                <Link href="/organizations" className="transition-colors hover:text-white/70">Verified Organizations</Link>
-              </div>
-
-              <div className="flex flex-col gap-3">
                 <h3 className="font-semibold text-white/85">Discover</h3>
                 <Link href="/discover" className="transition-colors hover:text-white/70">Browse Events</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Events by Category</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Upcoming Events</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Campus Events</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Featured Events</Link>
                 <Link href="/organizations" className="transition-colors hover:text-white/70">Organizations</Link>
               </div>
 

@@ -1,10 +1,10 @@
 import Image from "next/image";
 
 const POSTERS = [
-  { src: "/images/poster-run.jpg", label: "COFURUN'26", meta: "3 Oct · Padang Kawad" },
-  { src: "/images/poster-workshop.jpg", label: "Design Sprint", meta: "UI Foundations" },
-  { src: "/images/poster-talk.jpg", label: "AI in 2026", meta: "Panel Talk" },
-  { src: "/images/poster-career.jpg", label: "Career Fair", meta: "20+ companies" },
+  { src: "/images/universitytalk.jpg", label: "UNIVERSITY TALKS", meta: "13 April · ONLINE" },
+  { src: "/images/theatre-poster.jpg", label: "Theatre Day", meta: "Ticket Only" },
+  { src: "/images/musicday-poster.jpg", label: "MUSIC DAY", meta: "REGISTER NOW" },
+  { src: "/images/matchday-poster.jpg", label: "MATCHDAY", meta: "FRIENDLY" },
 ];
 
 export function FloatingPosters() {
@@ -24,9 +24,9 @@ export function FloatingPosters() {
           className={`absolute ${positions[i]} ${floatClass[i]} overflow-hidden rounded-2xl border border-white/10 bg-slate-800 shadow-2xl`}
           style={{ ["--rot" as string]: "0deg" }}
         >
-          <div className="relative aspect-[4/5] w-full">
+          <div className="relative aspect-4/5 w-full">
             <Image src={p.src} alt="" fill className="object-cover opacity-90" sizes="220px" />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-3">
+            <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/85 to-transparent p-3">
               <p className="font-brand text-xs font-semibold text-white">{p.label}</p>
               <p className="text-[10px] text-white/70">{p.meta}</p>
             </div>

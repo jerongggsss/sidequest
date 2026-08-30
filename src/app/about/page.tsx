@@ -187,28 +187,21 @@ export default async function AboutPage() {
                 <Link href="/discover" className="transition-colors hover:text-white/70">Discover Events</Link>
                 <Link href="/organizations" className="transition-colors hover:text-white/70">Organizations</Link>
                 <Link href="/saved" className="transition-colors hover:text-white/70">Saved Events</Link>
-                <Link href="/studio" className="transition-colors hover:text-white/70">Studio</Link>
+                <Link href="/about" className="transition-colors hover:text-white/70">About</Link>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-white/85">For Organizations</h3>
+                <Link href="/about" className="transition-colors hover:text-white/70">Why SideQuest</Link>
+                <Link href="/organizations" className="transition-colors hover:text-white/70">Organization Profiles</Link>
+                <Link href="/studio" className="transition-colors hover:text-white/70">Manage Events</Link>
                 <Link href="/studio/events/new" className="transition-colors hover:text-white/70">Create an Event</Link>
                 <Link href="/studio/organizations/new" className="transition-colors hover:text-white/70">Create an Organization</Link>
               </div>
 
               <div className="flex flex-col gap-3">
-                <h3 className="font-semibold text-white/85">For Organizations</h3>
-                <Link href="/" className="transition-colors hover:text-white/70">Why SideQuest</Link>
-                <Link href="/organizations" className="transition-colors hover:text-white/70">Organization Profiles</Link>
-                <Link href="/studio" className="transition-colors hover:text-white/70">Manage Events</Link>
-                <Link href="/studio" className="transition-colors hover:text-white/70">Publish Events</Link>
-                <Link href="/" className="transition-colors hover:text-white/70">Community Reach</Link>
-                <Link href="/organizations" className="transition-colors hover:text-white/70">Verified Organizations</Link>
-              </div>
-
-              <div className="flex flex-col gap-3">
                 <h3 className="font-semibold text-white/85">Discover</h3>
                 <Link href="/discover" className="transition-colors hover:text-white/70">Browse Events</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Events by Category</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Upcoming Events</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Campus Events</Link>
-                <Link href="/discover" className="transition-colors hover:text-white/70">Featured Events</Link>
                 <Link href="/organizations" className="transition-colors hover:text-white/70">Organizations</Link>
               </div>
 
