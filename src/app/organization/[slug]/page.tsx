@@ -49,7 +49,7 @@ export default async function OrganizationPage({ params }: Props) {
       </div>
 
       <div className="mx-auto max-w-5xl px-6">
-        <div className="-mt-14 flex flex-col items-center text-center sm:-mt-16">
+        <div className="relative z-10 -mt-14 flex flex-col items-center text-center sm:-mt-16">
           <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl border-4 border-white bg-ink font-brand text-2xl font-bold text-white shadow-xl sm:h-32 sm:w-32">
             {organization.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element

@@ -164,7 +164,7 @@ export default async function HomePage() {
               <p>📸 Instagram story, expires in 24h</p>
             </div>
             <div className="text-2xl text-white/40">↓</div>
-            <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-brand/40 bg-gradient-to-b from-brand/20 to-transparent p-1 shadow-2xl">
+            <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-brand/40 bg-linear-to-b from-brand/20 to-transparent p-1 shadow-2xl">
               <div className="rounded-xl bg-slate-900 p-5">
                 <span className="mb-3 inline-block rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white/70">
                   Sports

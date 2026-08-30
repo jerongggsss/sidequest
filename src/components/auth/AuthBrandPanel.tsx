@@ -15,10 +15,10 @@ export function AuthBrandPanel() {
         SIDEQUEST
       </Link>
 
-      <div className="relative z-10 mx-auto w-full max-w-sm rotate-[-2deg] overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-2xl backdrop-blur">
-        <div className="relative aspect-[4/5] w-full">
+      <div className="relative z-10 mx-auto w-full max-w-sm -rotate-2 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-2xl backdrop-blur">
+        <div className="relative aspect-4/5 w-full">
           <Image src="/images/poster-run.jpg" alt="" fill className="object-cover" sizes="360px" />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-5">
+          <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/90 to-transparent p-5">
             <span className="mb-2 inline-block rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white/70">
               Sports
             </span>
@@ -40,6 +40,6 @@ export function AuthBrandPanel() {
           Every event on campus, one beautiful page away.
         </p>
       </div>
-  </div>
-);
+    </div>
+  );
 }
