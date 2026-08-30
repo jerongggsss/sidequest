@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useRef } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { registerAction, type AuthState } from "@/lib/actions/auth";
@@ -8,11 +8,29 @@ import { registerAction, type AuthState } from "@/lib/actions/auth";
 export function RegisterForm({ universities }: { universities: { id: string; name: string }[] }) {
   const [state, formAction, pending] = useActionState<AuthState, FormData>(registerAction, null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [clientError, setClientError] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(e.currentTarget);
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    if (password !== confirmPassword) {
+      e.preventDefault();
+      setClientError("Passwords do not match.");
+    } else {
+      setClientError("");
+    }
+  };
+
+  const error = clientError || state?.error;
 
   return (
-    <form action={formAction} className="mt-8 flex flex-col gap-4">
-      {state?.error ? (
-        <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">{state.error}</p>
+    <form ref={formRef} action={formAction} onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
+      {error ? (
+        <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">{error}</p>
       ) : null}
 
       <label className="flex flex-col gap-1.5">
@@ -21,7 +39,7 @@ export function RegisterForm({ universities }: { universities: { id: string; nam
           name="name"
           type="text"
           required
-          placeholder="Aiman Studio"
+          placeholder="HEZRON LLAU"
           className="rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         />
       </label>
@@ -32,7 +50,7 @@ export function RegisterForm({ universities }: { universities: { id: string; nam
           name="email"
           type="email"
           required
-          placeholder="you@university.edu"
+          placeholder="email@gmail.com"
           className="rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         />
       </label>
@@ -45,7 +63,7 @@ export function RegisterForm({ universities }: { universities: { id: string; nam
             type={showPassword ? "text" : "password"}
             required
             minLength={6}
-            placeholder="At least 6 characters"
+            placeholder="Create a password"
             className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
           <button
@@ -55,6 +73,28 @@ export function RegisterForm({ universities }: { universities: { id: string; nam
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        </div>
+      </label>
+
+      <label className="flex flex-col gap-1.5">
+        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Confirm password</span>
+        <div className="relative">
+          <input
+            name="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            required
+            minLength={6}
+            placeholder="Re-enter your password"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword((s) => !s)}
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+          >
+            {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         </div>
       </label>
@@ -83,7 +123,19 @@ export function RegisterForm({ universities }: { universities: { id: string; nam
         {pending ? "Creating account…" : "Create account"} <ArrowRight className="h-4 w-4" />
       </button>
 
-      <p className="text-center text-sm text-slate-500">
+      <p className="mt-2 text-center text-xs text-slate-500">
+        By creating an account, you agree to our{" "}
+        <Link href="/terms" className="text-slate-600 hover:text-ink hover:underline">
+          Terms of Service
+        </Link>{" "}
+        and acknowledge our{" "}
+        <Link href="/privacy" className="text-slate-600 hover:text-ink hover:underline">
+          Privacy Policy
+        </Link>
+        .
+      </p>
+
+      <p className="mt-4 text-center text-sm text-slate-500">
         Already have an account?{" "}
         <Link href="/login" className="font-semibold text-brand hover:underline">
           Sign in

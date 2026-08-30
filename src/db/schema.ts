@@ -41,8 +41,25 @@ export const users = pgTable("users", {
   }),
   avatarUrl: text("avatar_url"),
   bio: text("bio"),
+  emailVerified: timestamp("email_verified"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const verificationTokens = pgTable("verification_tokens", {
+  identifier: text("identifier").notNull(),
+  token: text("token").notNull().unique(),
+  expires: timestamp("expires").notNull(),
+}, (t) => [
+  unique("verification_tokens_identifier_token_unique").on(t.identifier, t.token)
+]);
+
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  identifier: text("identifier").notNull(),
+  token: text("token").notNull().unique(),
+  expires: timestamp("expires").notNull(),
+}, (t) => [
+  unique("password_reset_tokens_identifier_token_unique").on(t.identifier, t.token)
+]);
 
 export const organizations = pgTable(
   "organizations",

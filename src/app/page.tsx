@@ -261,16 +261,15 @@ export default async function HomePage() {
               trust and recognition.
             </p>
             <Link
-              href="/organization/sidequest"
+              href="/organizations"
               className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline"
             >
-              View example profile <ArrowRight className="h-4 w-4" />
+              Browse organizations <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <Link
-            href="/organization/sidequest"
-            className="block rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-shadow hover:shadow-lg"
+          <div
+            className="block rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
           >
             <div className="flex items-center gap-4">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ink font-brand text-lg font-bold text-white">
@@ -296,7 +295,7 @@ export default async function HomePage() {
                 <p className="text-slate-500">Organization</p>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       </section>
 
