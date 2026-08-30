@@ -323,30 +323,66 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-ink py-12 text-center text-sm text-white/40">
-        <p className="font-brand tracking-wide text-white/70">SIDEQUEST</p>
-        <p className="mt-2">Find your next adventure.</p>
-        <nav className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/40">
-          {[
-            { href: "/discover", label: "Discover" },
-            { href: "/organizations", label: "Organizations" },
-            { href: "/saved", label: "Saved" },
-            { href: "/studio", label: "Studio" },
-            { href: "/privacy", label: "Privacy" },
-            { href: "/terms", label: "Terms" },
-            { href: "/guidelines", label: "Guidelines" },
-            { href: "/help", label: "Help" },
-            { href: "/contact", label: "Contact" },
-          ].map((l, i, arr) => (
-            <span key={l.href} className="flex items-center gap-x-5">
-              <Link href={l.href} className="transition-colors hover:text-white/70">
-                {l.label}
-              </Link>
-              {i < arr.length - 1 && <span aria-hidden>·</span>}
-            </span>
-          ))}
-        </nav>
-        <p className="mt-6">&copy; {new Date().getFullYear()} SideQuest</p>
+      <footer className="border-t border-white/10 bg-ink py-16 text-sm text-white/40">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-8">
+            <div className="flex-shrink-0 lg:w-1/4">
+              <p className="font-brand text-lg tracking-wide text-white/70">SIDEQUEST</p>
+              <p className="mt-2 max-w-xs">Find your next adventure.</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12 lg:w-3/4">
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-white/85">SideQuest</h3>
+                <Link href="/discover" className="transition-colors hover:text-white/70">Discover Events</Link>
+                <Link href="/organizations" className="transition-colors hover:text-white/70">Organizations</Link>
+                <Link href="/saved" className="transition-colors hover:text-white/70">Saved Events</Link>
+                <Link href="/studio" className="transition-colors hover:text-white/70">Studio</Link>
+                <Link href="/studio/events/new" className="transition-colors hover:text-white/70">Create an Event</Link>
+                <Link href="/studio/organizations/new" className="transition-colors hover:text-white/70">Create an Organization</Link>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-white/85">For Organizations</h3>
+                <Link href="/" className="transition-colors hover:text-white/70">Why SideQuest</Link>
+                <Link href="/organizations" className="transition-colors hover:text-white/70">Organization Profiles</Link>
+                <Link href="/studio" className="transition-colors hover:text-white/70">Manage Events</Link>
+                <Link href="/studio" className="transition-colors hover:text-white/70">Publish Events</Link>
+                <Link href="/" className="transition-colors hover:text-white/70">Community Reach</Link>
+                <Link href="/organizations" className="transition-colors hover:text-white/70">Verified Organizations</Link>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-white/85">Discover</h3>
+                <Link href="/discover" className="transition-colors hover:text-white/70">Browse Events</Link>
+                <Link href="/discover" className="transition-colors hover:text-white/70">Events by Category</Link>
+                <Link href="/discover" className="transition-colors hover:text-white/70">Upcoming Events</Link>
+                <Link href="/discover" className="transition-colors hover:text-white/70">Campus Events</Link>
+                <Link href="/discover" className="transition-colors hover:text-white/70">Featured Events</Link>
+                <Link href="/organizations" className="transition-colors hover:text-white/70">Organizations</Link>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-white/85">Support &amp; Legal</h3>
+                <Link href="/help" className="transition-colors hover:text-white/70">Help / FAQ</Link>
+                <Link href="/contact" className="transition-colors hover:text-white/70">Contact</Link>
+                <Link href="/privacy" className="transition-colors hover:text-white/70">Privacy Policy</Link>
+                <Link href="/terms" className="transition-colors hover:text-white/70">Terms of Service</Link>
+                <Link href="/guidelines" className="transition-colors hover:text-white/70">Community Guidelines</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
+            <p>&copy; {new Date().getFullYear()} SideQuest</p>
+            <div className="flex flex-wrap gap-4 text-xs">
+              <Link href="/privacy" className="transition-colors hover:text-white/70">Privacy</Link>
+              <Link href="/terms" className="transition-colors hover:text-white/70">Terms</Link>
+              <Link href="/guidelines" className="transition-colors hover:text-white/70">Guidelines</Link>
+              <Link href="/contact" className="transition-colors hover:text-white/70">Contact</Link>
+            </div>
+          </div>
+        </div>
       </footer>
     </main>
   );
