@@ -326,7 +326,7 @@ export default async function HomePage() {
       <footer className="border-t border-white/10 bg-ink py-16 text-sm text-white/40">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-8">
-            <div className="flex-shrink-0 lg:w-1/4">
+            <div className="shrink-0 lg:w-1/4">
               <p className="font-brand text-lg tracking-wide text-white/70">SIDEQUEST</p>
               <p className="mt-2 max-w-xs">Find your next adventure.</p>
             </div>
