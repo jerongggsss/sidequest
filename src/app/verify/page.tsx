@@ -5,6 +5,7 @@ import { XCircle, ArrowRight } from "lucide-react";
 import { db } from "@/db";
 import { verificationTokens, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { hashToken } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,8 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
   const { token } = await searchParams;
   
   if (token) {
-    const [dbToken] = await db.select().from(verificationTokens).where(eq(verificationTokens.token, token)).limit(1);
+    const hashedToken = hashToken(token);
+    const [dbToken] = await db.select().from(verificationTokens).where(eq(verificationTokens.token, hashedToken)).limit(1);
     
     if (dbToken && dbToken.expires >= new Date()) {
       // Valid token! Find user and update.
@@ -21,7 +23,7 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
       if (user) {
         if (!user.emailVerified) {
           await db.update(users).set({ emailVerified: new Date() }).where(eq(users.id, user.id));
-          await db.delete(verificationTokens).where(eq(verificationTokens.token, token));
+          await db.delete(verificationTokens).where(eq(verificationTokens.token, hashedToken));
         }
         redirect("/login?verified=true");
       }

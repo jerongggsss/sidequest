@@ -27,9 +27,9 @@ export default function CheckEmailPage({ searchParams }: { searchParams: Promise
             </div>
           )}
 
-          <p className="mt-4 text-sm text-slate-500">
-            We've sent a verification link to <span className="font-semibold text-ink">{email || "your email address"}</span>.
-          </p>
+          <p className="text-gray-400">
+          {isResent ? "We've sent another verification link. Please check your email." : "We've sent a verification link to your email. Please check your inbox and spam folder."}
+        </p>
           <p className="mt-2 text-sm text-slate-500">
             Open your email and click the verification link to verify your account before signing in.
           </p>

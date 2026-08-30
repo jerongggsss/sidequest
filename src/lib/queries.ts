@@ -8,7 +8,7 @@ import {
   organizationMembers,
   users,
 } from "@/db/schema";
-import { and, desc, eq, ilike, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or, inArray } from "drizzle-orm";
 
 export type EventWithRelations = Awaited<ReturnType<typeof getEventBySlug>>;
 
@@ -221,6 +221,21 @@ export async function isOrganizationMember(organizationId: string, userId: strin
       and(
         eq(organizationMembers.organizationId, organizationId),
         eq(organizationMembers.userId, userId),
+      ),
+    )
+    .limit(1);
+  return !!row;
+}
+
+export async function isOrganizationAdmin(organizationId: string, userId: string) {
+  const [row] = await db
+    .select({ id: organizationMembers.id })
+    .from(organizationMembers)
+    .where(
+      and(
+        eq(organizationMembers.organizationId, organizationId),
+        eq(organizationMembers.userId, userId),
+        inArray(organizationMembers.role, ["owner", "admin"])
       ),
     )
     .limit(1);

@@ -1,8 +1,13 @@
 import { Resend } from "resend";
 import { nanoid } from "nanoid";
+import { createHash } from "crypto";
 import { db } from "@/db";
 import { verificationTokens, passwordResetTokens } from "@/db/schema";
 import { eq } from "drizzle-orm";
+
+export function hashToken(token: string) {
+  return createHash("sha256").update(token).digest("hex");
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -12,11 +17,12 @@ export async function createVerificationToken(email: string) {
 
   // Generate secure token (we use a long nanoid which is URL safe and secure enough for this purpose)
   const token = nanoid(32);
+  const hashedToken = hashToken(token);
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
   await db.insert(verificationTokens).values({
     identifier: email,
-    token,
+    token: hashedToken,
     expires,
   });
 
@@ -106,11 +112,12 @@ export async function createPasswordResetToken(email: string) {
   await db.delete(passwordResetTokens).where(eq(passwordResetTokens.identifier, email));
 
   const token = nanoid(32);
+  const hashedToken = hashToken(token);
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
   await db.insert(passwordResetTokens).values({
     identifier: email,
-    token,
+    token: hashedToken,
     expires,
   });
 

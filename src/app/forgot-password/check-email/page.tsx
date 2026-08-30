@@ -16,11 +16,11 @@ export default function ForgotPasswordCheckEmailPage() {
           <h1 className="font-display text-3xl font-semibold text-ink">Check your email</h1>
 
           <p className="mt-4 text-sm text-slate-500">
-            If an account exists for this email, we've sent a password reset link.
+            If an account exists for this email, we&apos;ve sent a password reset link.
           </p>
-          <p className="mt-2 text-sm text-slate-500">
-            Please check your inbox and click the link to choose a new password.
-          </p>
+          <p className="text-gray-400">
+          We&apos;ve sent a password reset link to your email. Please check your inbox and spam folder.
+        </p>
 
           <div className="mt-10 w-full space-y-4">
             <Link

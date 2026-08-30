@@ -36,6 +36,7 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
+  authVersion: integer("auth_version").notNull().default(1),
   universityId: text("university_id").references(() => universities.id, {
     onDelete: "set null",
   }),
@@ -160,3 +161,9 @@ export const savedEvents = pgTable(
   },
   (t) => [unique("saved_event_unique").on(t.userId, t.eventId)],
 );
+
+export const rateLimits = pgTable("rate_limits", {
+  key: text("key").primaryKey(),
+  points: integer("points").notNull().default(0),
+  resetAt: timestamp("reset_at").notNull(),
+});

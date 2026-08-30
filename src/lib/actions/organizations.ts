@@ -8,6 +8,22 @@ import { saveUploadedFile } from "@/lib/upload";
 import { slugify, randomSuffix } from "@/lib/slug";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { headers } from "next/headers";
+import { z } from "zod";
+
+async function getClientIp() {
+  const headersList = await headers();
+  return headersList.get("x-forwarded-for") || "unknown";
+}
+
+const orgSchema = z.object({
+  name: z.string().min(1, "Organization name is required").max(100, "Name is too long"),
+  description: z.string().max(2000).optional(),
+  website: z.string().url("Invalid website URL").max(500).optional().or(z.literal("")),
+  instagram: z.string().max(100).optional(),
+  universityId: z.string().max(100).optional().nullable(),
+});
 
 async function uniqueOrgSlug(base: string, ignoreId?: string) {
   let candidate = slugify(base) || "org";
@@ -25,86 +41,126 @@ async function uniqueOrgSlug(base: string, ignoreId?: string) {
 }
 
 export async function createOrganizationAction(formData: FormData) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  let orgId = "";
+  try {
+    const user = await getCurrentUser();
+    if (!user) redirect("/login");
 
-  const name = String(formData.get("name") || "").trim();
-  if (!name) throw new Error("Organization name is required");
+    const ip = await getClientIp();
+    const rlIp = await checkRateLimit("create_org_ip", ip, { max: 10, windowMs: 15 * 60 * 1000 });
+    if (!rlIp.success) throw new Error("Too many requests. Please try again later.");
 
-  const description = String(formData.get("description") || "").trim();
-  const website = String(formData.get("website") || "").trim();
-  const instagram = String(formData.get("instagram") || "").trim();
-  const universityId = String(formData.get("universityId") || "") || null;
+    const parsed = orgSchema.safeParse({
+      name: formData.get("name"),
+      description: formData.get("description"),
+      website: formData.get("website"),
+      instagram: formData.get("instagram"),
+      universityId: formData.get("universityId") || null,
+    });
 
-  const slug = await uniqueOrgSlug(name);
+    if (!parsed.success) {
+      throw new Error(parsed.error.issues[0].message);
+    }
 
-  const logoFile = formData.get("logo") as File | null;
-  const bannerFile = formData.get("banner") as File | null;
-  const logoUrl = logoFile && logoFile.size > 0 ? await saveUploadedFile(logoFile, "organizations/logos") : null;
-  const bannerUrl = bannerFile && bannerFile.size > 0 ? await saveUploadedFile(bannerFile, "organizations/banners") : null;
+    const { name, description, website, instagram, universityId } = parsed.data;
 
-  const [org] = await db
-    .insert(organizations)
-    .values({
-      name,
-      slug,
-      description,
-      website,
-      instagram,
-      universityId,
-      logoUrl,
-      bannerUrl,
-      createdBy: user.id,
-    })
-    .returning({ id: organizations.id });
+    const slug = await uniqueOrgSlug(name);
 
-  await db.insert(organizationMembers).values({
-    organizationId: org.id,
-    userId: user.id,
-    role: "owner",
-  });
+    const logoFile = formData.get("logo") as File | null;
+    const bannerFile = formData.get("banner") as File | null;
+    const logoUrl = logoFile && logoFile.size > 0 ? await saveUploadedFile(logoFile, "organizations/logos") : null;
+    const bannerUrl = bannerFile && bannerFile.size > 0 ? await saveUploadedFile(bannerFile, "organizations/banners") : null;
+
+    const [org] = await db
+      .insert(organizations)
+      .values({
+        name,
+        slug,
+        description,
+        website,
+        instagram,
+        universityId,
+        logoUrl,
+        bannerUrl,
+        createdBy: user.id,
+      })
+      .returning({ id: organizations.id });
+
+    await db.insert(organizationMembers).values({
+      organizationId: org.id,
+      userId: user.id,
+      role: "owner",
+    });
+
+    orgId = org.id;
+  } catch (err: any) {
+    if (err?.message === "NEXT_REDIRECT") throw err;
+    console.error(err);
+    throw new Error(err.message || "An unexpected error occurred.");
+  }
 
   revalidatePath("/studio/organizations");
-  redirect(`/studio/organizations/${org.id}`);
+  redirect(`/studio/organizations/${orgId}`);
 }
 
 export async function updateOrganizationAction(orgId: string, formData: FormData) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  let slugToReturn = "";
+  try {
+    const user = await getCurrentUser();
+    if (!user) redirect("/login");
 
-  const [existing] = await db.select().from(organizations).where(eq(organizations.id, orgId)).limit(1);
-  if (!existing) throw new Error("Organization not found");
+    const ip = await getClientIp();
+    const rlIp = await checkRateLimit("update_org_ip", ip, { max: 40, windowMs: 15 * 60 * 1000 });
+    if (!rlIp.success) throw new Error("Too many requests. Please try again later.");
 
-  // Permission: must be a member
-  const { isOrganizationMember } = await import("@/lib/queries");
-  const isMember = await isOrganizationMember(orgId, user.id);
-  if (!isMember) throw new Error("You are not a member of this organization.");
+    const [existing] = await db.select().from(organizations).where(eq(organizations.id, orgId)).limit(1);
+    if (!existing) throw new Error("Organization not found");
 
-  const name = String(formData.get("name") || existing.name).trim();
-  const description = String(formData.get("description") || "").trim();
-  const website = String(formData.get("website") || "").trim();
-  const instagram = String(formData.get("instagram") || "").trim();
-  const universityId = String(formData.get("universityId") || "") || null;
+    // Permission: must be an admin or owner
+    const { isOrganizationAdmin } = await import("@/lib/queries");
+    const isAdmin = await isOrganizationAdmin(orgId, user.id);
+    if (!isAdmin) throw new Error("You do not have permission to update this organization.");
 
-  const logoFile = formData.get("logo") as File | null;
-  const bannerFile = formData.get("banner") as File | null;
-  const removeLogo = formData.get("removeLogo") === "true";
-  const removeBanner = formData.get("removeBanner") === "true";
+    const parsed = orgSchema.safeParse({
+      name: formData.get("name") || existing.name,
+      description: formData.get("description"),
+      website: formData.get("website"),
+      instagram: formData.get("instagram"),
+      universityId: formData.get("universityId") || existing.universityId,
+    });
 
-  let logoUrl = existing.logoUrl;
-  if (removeLogo) logoUrl = null;
-  else if (logoFile && logoFile.size > 0) logoUrl = await saveUploadedFile(logoFile, "organizations/logos");
+    if (!parsed.success) {
+      throw new Error(parsed.error.issues[0].message);
+    }
 
-  let bannerUrl = existing.bannerUrl;
-  if (removeBanner) bannerUrl = null;
-  else if (bannerFile && bannerFile.size > 0) bannerUrl = await saveUploadedFile(bannerFile, "organizations/banners");
+    const { name, description, website, instagram, universityId } = parsed.data;
 
-  await db
-    .update(organizations)
-    .set({ name, description, website, instagram, universityId, logoUrl, bannerUrl })
-    .where(eq(organizations.id, orgId));
+    const logoFile = formData.get("logo") as File | null;
+    const bannerFile = formData.get("banner") as File | null;
+    const removeLogo = formData.get("removeLogo") === "true";
+    const removeBanner = formData.get("removeBanner") === "true";
+
+    let logoUrl = existing.logoUrl;
+    if (removeLogo) logoUrl = null;
+    else if (logoFile && logoFile.size > 0) logoUrl = await saveUploadedFile(logoFile, "organizations/logos");
+
+    let bannerUrl = existing.bannerUrl;
+    if (removeBanner) bannerUrl = null;
+    else if (bannerFile && bannerFile.size > 0) bannerUrl = await saveUploadedFile(bannerFile, "organizations/banners");
+
+    await db
+      .update(organizations)
+      .set({ name, description, website, instagram, universityId, logoUrl, bannerUrl })
+      .where(eq(organizations.id, orgId));
+
+    slugToReturn = existing.slug;
+  } catch (err: any) {
+    if (err?.message === "NEXT_REDIRECT") throw err;
+    console.error(err);
+    throw new Error(err.message || "An unexpected error occurred.");
+  }
 
   revalidatePath("/studio/organizations");
   revalidatePath(`/studio/organizations/${orgId}`);
-  revalidatePath(`/organization/${existing.slug}`);
+  revalidatePath(`/organization/${slugToReturn}`);
 }

@@ -283,7 +283,7 @@ export default async function HomePage() {
               </div>
             </div>
             <p className="mt-5 text-sm text-slate-600">
-              Discover campus events, organizations, and communities through SideQuest — a central place for students to find what's happening around campus.
+              Discover campus events, organizations, and communities through SideQuest — a central place for students to find what&apos;s happening around campus.
             </p>
             <div className="mt-6 flex gap-6 border-t border-slate-100 pt-5 text-sm">
               <div>

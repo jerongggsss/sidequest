@@ -15,6 +15,7 @@ const encodedKey = new TextEncoder().encode(rawSecret);
 
 export type SessionPayload = {
   userId: string;
+  authVersion?: number;
 };
 
 export async function hashPassword(password: string) {
@@ -34,7 +35,10 @@ export async function createSessionToken(payload: SessionPayload) {
 }
 
 export async function setSessionCookie(userId: string) {
-  const token = await createSessionToken({ userId });
+  const [user] = await db.select({ authVersion: users.authVersion }).from(users).where(eq(users.id, userId)).limit(1);
+  if (!user) return;
+
+  const token = await createSessionToken({ userId, authVersion: user.authVersion });
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
@@ -69,12 +73,19 @@ export async function getCurrentUser() {
         avatarUrl: users.avatarUrl,
         bio: users.bio,
         createdAt: users.createdAt,
+        authVersion: users.authVersion,
       })
       .from(users)
       .where(eq(users.id, userId))
       .limit(1);
 
-    return user ?? null;
+    if (!user) return null;
+    
+    const tokenAuthVersion = payload.authVersion as number | undefined;
+    if (user.authVersion > 1 && tokenAuthVersion !== user.authVersion) return null;
+    if (tokenAuthVersion !== undefined && tokenAuthVersion !== user.authVersion) return null;
+
+    return user;
   } catch {
     return null;
   }
