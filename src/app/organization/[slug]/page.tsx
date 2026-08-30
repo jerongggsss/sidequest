@@ -42,7 +42,7 @@ export default async function OrganizationPage({ params }: Props) {
             style={{ backgroundImage: `url(${organization.bannerUrl})` }}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-ink to-slate-900" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-800 via-ink to-slate-900" />
         )}
         <div className="absolute inset-0 bg-ink/40" />
         <div className="bg-grid absolute inset-0 opacity-20" />

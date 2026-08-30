@@ -323,9 +323,30 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-ink py-10 text-center text-sm text-white/40">
+      <footer className="border-t border-white/10 bg-ink py-12 text-center text-sm text-white/40">
         <p className="font-brand tracking-wide text-white/70">SIDEQUEST</p>
-        <p className="mt-2">Find your next adventure. &copy; {new Date().getFullYear()}</p>
+        <p className="mt-2">Find your next adventure.</p>
+        <nav className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/40">
+          {[
+            { href: "/discover", label: "Discover" },
+            { href: "/organizations", label: "Organizations" },
+            { href: "/saved", label: "Saved" },
+            { href: "/studio", label: "Studio" },
+            { href: "/privacy", label: "Privacy" },
+            { href: "/terms", label: "Terms" },
+            { href: "/guidelines", label: "Guidelines" },
+            { href: "/help", label: "Help" },
+            { href: "/contact", label: "Contact" },
+          ].map((l, i, arr) => (
+            <span key={l.href} className="flex items-center gap-x-5">
+              <Link href={l.href} className="transition-colors hover:text-white/70">
+                {l.label}
+              </Link>
+              {i < arr.length - 1 && <span aria-hidden>·</span>}
+            </span>
+          ))}
+        </nav>
+        <p className="mt-6">&copy; {new Date().getFullYear()} SideQuest</p>
       </footer>
     </main>
   );
