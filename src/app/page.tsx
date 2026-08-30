@@ -257,7 +257,7 @@ export default async function HomePage() {
               trust and recognition.
             </p>
             <Link
-              href="/organization/prsiswa"
+              href="/organization/sidequest"
               className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline"
             >
               View example profile <ArrowRight className="h-4 w-4" />
@@ -265,23 +265,22 @@ export default async function HomePage() {
           </div>
 
           <Link
-            href="/organization/prsiswa"
+            href="/organization/sidequest"
             className="block rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-shadow hover:shadow-lg"
           >
             <div className="flex items-center gap-4">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ink font-brand text-lg font-bold text-white">
-                PS
+                SQ
               </div>
               <div>
                 <p className="flex items-center gap-1.5 font-display text-lg font-semibold text-ink">
-                  PRSISWA <BadgeCheck className="h-4 w-4 text-brand" strokeWidth={2.5} />
+                  SideQuest <BadgeCheck className="h-4 w-4 text-brand" strokeWidth={2.5} />
                 </p>
                 <p className="text-sm text-slate-500">Universiti Malaysia Sabah</p>
               </div>
             </div>
             <p className="mt-5 text-sm text-slate-600">
-              The official student representative council driving campus culture, sports and
-              community life at UMS.
+              Discover campus events, organizations, and communities through SideQuest — a central place for students to find what's happening around campus.
             </p>
             <div className="mt-6 flex gap-6 border-t border-slate-100 pt-5 text-sm">
               <div>

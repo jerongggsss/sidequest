@@ -26,7 +26,7 @@ export function AuthBrandPanel() {
               COFURUN&apos;26
             </p>
             <p className="mt-1 flex items-center gap-1.5 text-xs text-white/70">
-              PRSISWA <BadgeCheck className="h-3.5 w-3.5 text-brand" />
+              SideQuest <BadgeCheck className="h-3.5 w-3.5 text-brand" />
             </p>
           </div>
         </div>

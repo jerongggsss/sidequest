@@ -55,7 +55,7 @@ async function main() {
       console.log("Created demo organizer account: demo@sidequest.my / sidequest123");
     }
 
-    let orgRes = await client.query("select id from organizations where slug=$1", ["prsiswa"]);
+    let orgRes = await client.query("select id from organizations where slug=$1", ["sidequest"]);
     let orgId;
     if (orgRes.rows[0]) {
       orgId = orgRes.rows[0].id;
@@ -66,9 +66,9 @@ async function main() {
          values ($1,$2,$3,$4,$5,$6,$7)`,
         [
           orgId,
-          "prsiswa",
-          "PRSISWA",
-          "The official student representative council driving campus culture, sports and community life at UMS.",
+          "sidequest",
+          "SideQuest",
+          "Discover campus events, organizations, and communities through SideQuest — a central place for students to find what's happening around campus.",
           uniIds.ums,
           true,
           userId,
